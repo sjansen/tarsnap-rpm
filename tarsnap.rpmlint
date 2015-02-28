@@ -1,0 +1,5 @@
+addFilter("W: name-repeated-in-summary C Tarsnap")
+addFilter("W: invalid-license Proprietary")
+# CentOS 6 bugs
+addFilter("I: enchant-dictionary-not-found en_US")
+addFilter("W: no-buildroot-tag")

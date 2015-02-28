@@ -1,0 +1,53 @@
+Name:           tarsnap
+Version:        ${VERSION}
+Release:        1%{?dist}
+Group:          Applications/Archiving
+Summary:        Client software for the Tarsnap online backup service
+
+License:        Proprietary
+URL:            https://www.tarsnap.com/
+Source0:        https://www.tarsnap.com/download/%{name}-autoconf-%{version}.tgz
+
+BuildRequires:  glibc-devel, openssl-devel, zlib-devel, e2fsprogs-devel
+
+%description
+Tarsnap is a secure online backup service. The Tarsnap client code
+provides a flexible and powerful command-line interface which can be
+used directly or via shell scripts.
+
+
+%prep
+%if 0%{?el6}
+%setup -q -n %{name}-autoconf-%{version}
+%else
+%autosetup -n %{name}-autoconf-%{version}
+%endif
+
+
+%build
+%configure
+make %{?_smp_mflags}
+
+
+%install
+rm -rf %{buildroot}
+%make_install
+cp tar/tarsnap.conf.sample .
+rm %{buildroot}/etc/tarsnap.conf.sample
+
+
+%clean
+rm -rf %{buildroot}
+
+
+%files
+%defattr(-, root, root, -)
+%doc COPYING tarsnap.conf.sample
+%{_bindir}/*
+%{_mandir}/man1/*
+%{_mandir}/man5/*
+
+
+%changelog
+* Sat May 17 2014 Stuart Jansen <sjansen@buscaluz.org> ${VERSION}-1
+- Initial package
